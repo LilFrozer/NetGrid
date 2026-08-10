@@ -1,0 +1,96 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "OpenSSL::Crypto::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OpenSSL__Crypto-Debug-25e4d3aa33b12f817aa9.json",
+					"name" : "OpenSSL::Crypto",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OpenSSL::SSL::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OpenSSL__SSL-Debug-03b0d0107414be515520.json",
+					"name" : "OpenSSL::SSL",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OpenSSL::applink::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OpenSSL__applink-Debug-f15d954cad9ab8658cf8.json",
+					"name" : "OpenSSL::applink",
+					"projectIndex" : 0
+				}
+			],
+			"directories" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-9ad1a58d4644cf6543fa.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "local_scaner_prj",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "local_scaner_prj::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-local_scaner_prj-Debug-d3b8cf5ce345d9c00af1.json",
+					"name" : "local_scaner_prj",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/alekseypodoplelov/Documents/hyita01/build",
+		"source" : "/Users/alekseypodoplelov/Documents/hyita01"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	}
+}
