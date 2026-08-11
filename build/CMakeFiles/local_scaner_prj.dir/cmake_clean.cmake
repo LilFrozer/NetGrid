@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/local_scaner_prj.dir/src/LocalNetworkScaner.cc.o"
   "CMakeFiles/local_scaner_prj.dir/src/LocalNetworkScaner.cc.o.d"
+  "CMakeFiles/local_scaner_prj.dir/src/Window.cc.o"
+  "CMakeFiles/local_scaner_prj.dir/src/Window.cc.o.d"
   "CMakeFiles/local_scaner_prj.dir/src/main.cc.o"
   "CMakeFiles/local_scaner_prj.dir/src/main.cc.o.d"
   "local_scaner_prj"

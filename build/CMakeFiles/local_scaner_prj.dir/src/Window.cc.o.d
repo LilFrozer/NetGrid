@@ -1,5 +1,6 @@
-CMakeFiles/local_scaner_prj.dir/src/LocalNetworkScaner.cc.o: \
-  /Users/alekseypodoplelov/Documents/hyita01/src/LocalNetworkScaner.cc \
+CMakeFiles/local_scaner_prj.dir/src/Window.cc.o: \
+  /Users/alekseypodoplelov/Documents/hyita01/src/Window.cc \
+  /Users/alekseypodoplelov/Documents/hyita01/inc/Window.h \
   /Users/alekseypodoplelov/Documents/hyita01/inc/LocalNetworkScaner.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/memory \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__assert \
@@ -988,53 +989,25 @@ CMakeFiles/local_scaner_prj.dir/src/LocalNetworkScaner.cc.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/map \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tree \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ifaddrs.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/os/availability.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/net/if.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/net/if_var.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/time.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval64.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_select.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/queue.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval32.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/net/net_kev.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/socket.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/constrained_ctypes.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/_param.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_param.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_sa_family_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_socklen_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_iovec_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/netinet/in.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/netinet6/in6.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arpa/inet.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/unistd.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_posix_vdisable.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/select.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_uuid_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/gethostuuid.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/fcntl.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/fcntl.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_o_sync.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_o_dsync.h \
+  /opt/homebrew/include/FL/Fl.H /opt/homebrew/include/FL/fl_config.h \
+  /opt/homebrew/include/FL/Fl_Export.H \
+  /opt/homebrew/include/FL/platform_types.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/dirent.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/dirent.h \
+  /opt/homebrew/include/FL/fl_casts.H /opt/homebrew/include/FL/fl_utf8.h \
+  /opt/homebrew/include/FL/fl_types.h /opt/homebrew/include/FL/fl_attr.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/stat.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_s_ifmt.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_filesec_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/netdb.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/sysctl.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/ucred.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/param.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/machine/param.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/param.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/bsm/audit.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/port.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/boolean.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/machine/boolean.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/boolean.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/machine/vm_types.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/mach/arm/vm_types.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/proc.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/lock.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/event.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/vm.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/net/if_dl.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/net/route.h
+  /opt/homebrew/include/FL/Enumerations.H \
+  /opt/homebrew/include/FL/Fl_Window.H \
+  /opt/homebrew/include/FL/Fl_Group.H \
+  /opt/homebrew/include/FL/Fl_Widget.H \
+  /opt/homebrew/include/FL/Fl_Bitmap.H \
+  /opt/homebrew/include/FL/Fl_Image.H \
+  /opt/homebrew/include/FL/Fl_Table.H \
+  /opt/homebrew/include/FL/Fl_Scroll.H \
+  /opt/homebrew/include/FL/Fl_Scrollbar.H \
+  /opt/homebrew/include/FL/Fl_Slider.H \
+  /opt/homebrew/include/FL/Fl_Valuator.H \
+  /opt/homebrew/include/FL/Fl_Button.H

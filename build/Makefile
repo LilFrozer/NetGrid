@@ -153,6 +153,30 @@ src/LocalNetworkScaner.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/local_scaner_prj.dir/build.make CMakeFiles/local_scaner_prj.dir/src/LocalNetworkScaner.cc.s
 .PHONY : src/LocalNetworkScaner.cc.s
 
+src/Window.o: src/Window.cc.o
+.PHONY : src/Window.o
+
+# target to build an object file
+src/Window.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/local_scaner_prj.dir/build.make CMakeFiles/local_scaner_prj.dir/src/Window.cc.o
+.PHONY : src/Window.cc.o
+
+src/Window.i: src/Window.cc.i
+.PHONY : src/Window.i
+
+# target to preprocess a source file
+src/Window.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/local_scaner_prj.dir/build.make CMakeFiles/local_scaner_prj.dir/src/Window.cc.i
+.PHONY : src/Window.cc.i
+
+src/Window.s: src/Window.cc.s
+.PHONY : src/Window.s
+
+# target to generate assembly for a file
+src/Window.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/local_scaner_prj.dir/build.make CMakeFiles/local_scaner_prj.dir/src/Window.cc.s
+.PHONY : src/Window.cc.s
+
 src/main.o: src/main.cc.o
 .PHONY : src/main.o
 
@@ -189,6 +213,9 @@ help:
 	@echo "... src/LocalNetworkScaner.o"
 	@echo "... src/LocalNetworkScaner.i"
 	@echo "... src/LocalNetworkScaner.s"
+	@echo "... src/Window.o"
+	@echo "... src/Window.i"
+	@echo "... src/Window.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

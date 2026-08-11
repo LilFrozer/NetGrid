@@ -8,6 +8,9 @@
 #include <fcntl.h>
 #include <sys/select.h>
 #include <netdb.h>
+#include <sys/sysctl.h>
+#include <net/if_dl.h>
+#include <net/route.h>
 
 std::vector<LocalSubnet> LocalNetworkScaner::getLocalSubnets() 
 /**
@@ -150,4 +153,40 @@ void LocalNetworkScaner::scanSubnet( pingM t = pingM::tcp_80 )
     for (auto &i : local_subnets) {
         func(t, i);
     }
+}
+
+std::map<u32, std::string> LocalNetworkScaner::readArpTable() 
+/**
+ * -> Выявляем mac из arp таблицы
+ */
+{
+    std::map<u32, std::string> res{};
+
+    int mib[6] = {CTL_NET, PF_ROUTE, 0, AF_INET, NET_RT_FLAGS, RTF_LLINFO};
+    size_t needed = 0;
+    if (sysctl(mib, 6, nullptr, &needed, nullptr, 0) < 0) return res;
+
+    std::vector<u8> buf(needed);
+    if (sysctl(mib, 6, buf.data(), &needed, nullptr, 0) < 0) return res;
+
+    u8* next = buf.data();
+    u8* end = buf.data() + needed;
+
+    while (next < end) {
+        auto rtm = reinterpret_cast<rt_msghdr*>(next);
+        auto sin = reinterpret_cast<sockaddr_in*>(rtm + 1);
+        auto sdl = reinterpret_cast<sockaddr_dl*>(
+            reinterpret_cast<uint8_t*>(sin) + sin->sin_len);
+
+        if (sdl->sdl_alen == 6) {
+            uint8_t* mac = reinterpret_cast<uint8_t*>(LLADDR(sdl));
+            char macStr[18];
+            snprintf(macStr, sizeof(macStr), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+            res[ntohl(sin->sin_addr.s_addr)] = macStr;
+        }
+
+        next += rtm->rtm_msglen;
+    }
+
+    return res;
 }

@@ -1,5 +1,6 @@
 CMakeFiles/local_scaner_prj.dir/src/main.cc.o: \
   /Users/alekseypodoplelov/Documents/hyita01/src/main.cc \
+  /Users/alekseypodoplelov/Documents/hyita01/inc/Window.h \
   /Users/alekseypodoplelov/Documents/hyita01/inc/LocalNetworkScaner.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/memory \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__assert \
@@ -985,4 +986,28 @@ CMakeFiles/local_scaner_prj.dir/src/main.cc.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/year_month_weekday.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/literals.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/forward_list \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/map \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tree \
+  /opt/homebrew/include/FL/Fl.H /opt/homebrew/include/FL/fl_config.h \
+  /opt/homebrew/include/FL/Fl_Export.H \
+  /opt/homebrew/include/FL/platform_types.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/dirent.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/dirent.h \
+  /opt/homebrew/include/FL/fl_casts.H /opt/homebrew/include/FL/fl_utf8.h \
+  /opt/homebrew/include/FL/fl_types.h /opt/homebrew/include/FL/fl_attr.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/stat.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_s_ifmt.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_filesec_t.h \
+  /opt/homebrew/include/FL/Enumerations.H \
+  /opt/homebrew/include/FL/Fl_Window.H \
+  /opt/homebrew/include/FL/Fl_Group.H \
+  /opt/homebrew/include/FL/Fl_Widget.H \
+  /opt/homebrew/include/FL/Fl_Bitmap.H \
+  /opt/homebrew/include/FL/Fl_Image.H \
+  /opt/homebrew/include/FL/Fl_Table.H \
+  /opt/homebrew/include/FL/Fl_Scroll.H \
+  /opt/homebrew/include/FL/Fl_Scrollbar.H \
+  /opt/homebrew/include/FL/Fl_Slider.H \
+  /opt/homebrew/include/FL/Fl_Valuator.H \
+  /opt/homebrew/include/FL/Fl_Button.H

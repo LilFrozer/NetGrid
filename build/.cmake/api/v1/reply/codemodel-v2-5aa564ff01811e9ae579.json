@@ -1,0 +1,402 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "OpenGL::GL::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OpenGL__GL-Debug-524cb4cad3f928445cea.json",
+					"name" : "OpenGL::GL",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OpenGL::GLU::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OpenGL__GLU-Debug-d849c7f23f48dff5d970.json",
+					"name" : "OpenGL::GLU",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OpenSSL::Crypto::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OpenSSL__Crypto-Debug-ac93235991ed1d1db9ee.json",
+					"name" : "OpenSSL::Crypto",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OpenSSL::SSL::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OpenSSL__SSL-Debug-474a9fdeedfb3953e627.json",
+					"name" : "OpenSSL::SSL",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "OpenSSL::applink::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OpenSSL__applink-Debug-cd1ffa4adc9c3293f610.json",
+					"name" : "OpenSSL::applink",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::X11::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__X11-Debug-190938fe515ae45f3e05.json",
+					"name" : "X11::X11",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::X11_xcb::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__X11_xcb-Debug-cc514be44df8747b0b78.json",
+					"name" : "X11::X11_xcb",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::Xau::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__Xau-Debug-12ecf480aec1acdf9727.json",
+					"name" : "X11::Xau",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::Xdmcp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__Xdmcp-Debug-fb98fc154288305f3c49.json",
+					"name" : "X11::Xdmcp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::Xext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__Xext-Debug-80ab2cc369a7a6b5ec41.json",
+					"name" : "X11::Xext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::Xkb::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__Xkb-Debug-fc9eeb72ad671b8ef690.json",
+					"name" : "X11::Xkb",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::Xrender::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__Xrender-Debug-99cb0a8f4871ad28cb50.json",
+					"name" : "X11::Xrender",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::Xutil::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__Xutil-Debug-bce0ec2dfa0ccd0b4b8c.json",
+					"name" : "X11::Xutil",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb-Debug-d872c74fc9c45d964847.json",
+					"name" : "X11::xcb",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_composite::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_composite-Debug-66f3b2f3739034092f2c.json",
+					"name" : "X11::xcb_composite",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_damage::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_damage-Debug-1e16e25728523933c667.json",
+					"name" : "X11::xcb_damage",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_dpms::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_dpms-Debug-4beee59aca08ab6e2b4d.json",
+					"name" : "X11::xcb_dpms",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_dri2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_dri2-Debug-bc1d0be74e468589a261.json",
+					"name" : "X11::xcb_dri2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_dri3::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_dri3-Debug-84af690dc51ce405d6b7.json",
+					"name" : "X11::xcb_dri3",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_glx::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_glx-Debug-6ced94c3775e037917e5.json",
+					"name" : "X11::xcb_glx",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_present::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_present-Debug-2793f2aed1b0066935d9.json",
+					"name" : "X11::xcb_present",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_randr::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_randr-Debug-7ae66a8be58c28f3914e.json",
+					"name" : "X11::xcb_randr",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_record::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_record-Debug-a37b27c8b68b1be2ed6a.json",
+					"name" : "X11::xcb_record",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_render::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_render-Debug-a68a8bb49bb2e45a685e.json",
+					"name" : "X11::xcb_render",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_res::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_res-Debug-f025f13fc2ac8e9b70b1.json",
+					"name" : "X11::xcb_res",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_screensaver::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_screensaver-Debug-bb499f2972f0a3685233.json",
+					"name" : "X11::xcb_screensaver",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_shape::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_shape-Debug-9abef22c1d700821054d.json",
+					"name" : "X11::xcb_shape",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_shm::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_shm-Debug-b91a1fc4eae80a4063f0.json",
+					"name" : "X11::xcb_shm",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_sync::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_sync-Debug-9af058c79a7e92e24c4b.json",
+					"name" : "X11::xcb_sync",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_xf86dri::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_xf86dri-Debug-6eaae9a2287ac6a9d5d5.json",
+					"name" : "X11::xcb_xf86dri",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_xfixes::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_xfixes-Debug-896b5e18daf04c3c0dec.json",
+					"name" : "X11::xcb_xfixes",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_xinerama::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_xinerama-Debug-f4255f0e4deb1b544e80.json",
+					"name" : "X11::xcb_xinerama",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_xinput::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_xinput-Debug-50de19c09ee3218d0cfa.json",
+					"name" : "X11::xcb_xinput",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_xkb::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_xkb-Debug-f3b1e845c4cc56df8e71.json",
+					"name" : "X11::xcb_xkb",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_xtest::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_xtest-Debug-dec1bb29abdd77381362.json",
+					"name" : "X11::xcb_xtest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_xv::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_xv-Debug-3d816c79a185a8bb8e3d.json",
+					"name" : "X11::xcb_xv",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "X11::xcb_xvmc::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-X11__xcb_xvmc-Debug-434c82c21059c934685a.json",
+					"name" : "X11::xcb_xvmc",
+					"projectIndex" : 0
+				}
+			],
+			"directories" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25,
+						26,
+						27,
+						28,
+						29,
+						30,
+						31,
+						32,
+						33,
+						34,
+						35,
+						36
+					],
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-9ad1a58d4644cf6543fa.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25,
+						26,
+						27,
+						28,
+						29,
+						30,
+						31,
+						32,
+						33,
+						34,
+						35,
+						36
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "local_scaner_prj",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "local_scaner_prj::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-local_scaner_prj-Debug-cd5258392831f6b29494.json",
+					"name" : "local_scaner_prj",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/alekseypodoplelov/Documents/hyita01/build",
+		"source" : "/Users/alekseypodoplelov/Documents/hyita01"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	}
+}

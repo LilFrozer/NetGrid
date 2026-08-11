@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/alekseypodoplelov/Documents/hyita01/src/LocalNetworkScaner.cc" "CMakeFiles/local_scaner_prj.dir/src/LocalNetworkScaner.cc.o" "gcc" "CMakeFiles/local_scaner_prj.dir/src/LocalNetworkScaner.cc.o.d"
+  "/Users/alekseypodoplelov/Documents/hyita01/src/Window.cc" "CMakeFiles/local_scaner_prj.dir/src/Window.cc.o" "gcc" "CMakeFiles/local_scaner_prj.dir/src/Window.cc.o.d"
   "/Users/alekseypodoplelov/Documents/hyita01/src/main.cc" "CMakeFiles/local_scaner_prj.dir/src/main.cc.o" "gcc" "CMakeFiles/local_scaner_prj.dir/src/main.cc.o.d"
   )
 

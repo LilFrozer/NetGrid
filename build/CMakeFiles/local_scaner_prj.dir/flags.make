@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/clang++
 CXX_DEFINES = -DBOOST_ASIO_USE_STD_ERIC=1 -DBOOST_BEAST_USE_STD_ERIC=1
 
-CXX_INCLUDES = -I/Users/alekseypodoplelov/Documents/hyita01/inc -I/Users/alekseypodoplelov/Documents/hyita01/libs -I/opt/homebrew/include -isystem /opt/homebrew/Cellar/openssl@3/3.6.2/include
+CXX_INCLUDES = -I/Users/alekseypodoplelov/Documents/hyita01/inc -I/Users/alekseypodoplelov/Documents/hyita01/libs -I/opt/homebrew/include -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/Cellar/openssl@3/3.6.2/include
 
 CXX_FLAGSarm64 = -g -std=gnu++17 -arch arm64
 
