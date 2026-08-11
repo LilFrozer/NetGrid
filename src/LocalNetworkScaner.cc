@@ -12,6 +12,58 @@
 #include <net/if_dl.h>
 #include <net/route.h>
 
+LocalNetworkScaner::LocalNetworkScaner( const std::string& vendor_db_path )
+/**
+ * 
+ */
+{
+    if (sqlite3_open(vendor_db_path.c_str(), &vendor_db_) != SQLITE_OK) {
+        throw std::runtime_error("Can't open database: " + std::string(sqlite3_errmsg(vendor_db_)));
+    }
+}
+
+LocalNetworkScaner::~LocalNetworkScaner()
+/**
+ * 
+ */
+{
+    sqlite3_close(vendor_db_);
+}
+
+std::string LocalNetworkScaner::findVendor( const std::string &mac )
+/**
+ * 
+ */
+{
+    std::string cleaned_mac{};
+    for (char c : mac) {
+        if (c != ':' && c != '-') {
+            cleaned_mac.push_back(static_cast<char>(std::toupper(c))); // приводим к верхнему регистру
+        }
+    }
+    if (cleaned_mac.length() < 6) {
+        return ""; // -> некорректный MAC
+    }
+
+    std::string oui = cleaned_mac.substr(0, 6); // -> берём первые 6 символов
+
+    // -> Запрос с точным совпадением
+    std::string sql = "SELECT vendor FROM macvendor WHERE oui = ?;";
+    sqlite3_stmt* stmt = nullptr;
+    std::string vendor;
+
+    if (sqlite3_prepare_v2(vendor_db_, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+        sqlite3_bind_text(stmt, 1, oui.c_str(), -1, SQLITE_STATIC);
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            const unsigned char* text = sqlite3_column_text(stmt, 0);
+            if (text) vendor = reinterpret_cast<const char*>(text);
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    return vendor;
+}
+
 std::vector<LocalSubnet> LocalNetworkScaner::getLocalSubnets() 
 /**
  * -> ищем все локальные подсети
@@ -95,14 +147,15 @@ bool LocalNetworkScaner::pingHost( pingM t, u32 addr, u32 timeout_ms )
     return alive;
 }
 
-void LocalNetworkScaner::scanSubnet( pingM t = pingM::tcp_80 ) 
+std::vector<DiscoveredDevice> LocalNetworkScaner::scanSubnet( pingM t = pingM::tcp_80 ) 
 /**
  * -> Проверяем локальные подсети
  */
 {
+    std::vector<DiscoveredDevice> devices{};
     std::vector<LocalSubnet> local_subnets{this->getLocalSubnets()};
 
-    auto func = [this]( pingM t, LocalSubnet &subnet ) -> void {
+    auto func = [this, &devices]( pingM t, LocalSubnet &subnet ) -> void {
         u32 host_bits{~subnet.mask};
         u32 net_addr{subnet.addr & subnet.mask};
         u32 broadcast_addr{net_addr | host_bits};
@@ -137,9 +190,8 @@ void LocalNetworkScaner::scanSubnet( pingM t = pingM::tcp_80 )
                             inet_ntop(AF_INET, &sa.sin_addr, _addr, sizeof(_addr));
                             dd.addr = _addr;
                         };
-                        DiscoveredDevice dev{};
-                        resolveDevice(dev, addr);
-                        std::cout << "find! -> " << dev.addr << " " << dev.hostname << std::endl;
+                        devices.push_back({});
+                        resolveDevice(devices.back(), addr);
                     }
                 }
             });
@@ -153,14 +205,22 @@ void LocalNetworkScaner::scanSubnet( pingM t = pingM::tcp_80 )
     for (auto &i : local_subnets) {
         func(t, i);
     }
+
+    std::map<std::string, std::string> arp_table{readArpTable()};
+    for (auto &i : devices) {
+        i.mac = arp_table[i.addr];
+        i.vendor = findVendor(i.mac);
+    }
+
+    return devices;
 }
 
-std::map<u32, std::string> LocalNetworkScaner::readArpTable() 
+std::map<std::string, std::string> LocalNetworkScaner::readArpTable() 
 /**
  * -> Выявляем mac из arp таблицы
  */
 {
-    std::map<u32, std::string> res{};
+    std::map<std::string, std::string> res{};
 
     int mib[6] = {CTL_NET, PF_ROUTE, 0, AF_INET, NET_RT_FLAGS, RTF_LLINFO};
     size_t needed = 0;
@@ -175,14 +235,17 @@ std::map<u32, std::string> LocalNetworkScaner::readArpTable()
     while (next < end) {
         auto rtm = reinterpret_cast<rt_msghdr*>(next);
         auto sin = reinterpret_cast<sockaddr_in*>(rtm + 1);
-        auto sdl = reinterpret_cast<sockaddr_dl*>(
-            reinterpret_cast<uint8_t*>(sin) + sin->sin_len);
+        auto sdl = reinterpret_cast<sockaddr_dl*>(reinterpret_cast<u8*>(sin) + sin->sin_len);
 
         if (sdl->sdl_alen == 6) {
-            uint8_t* mac = reinterpret_cast<uint8_t*>(LLADDR(sdl));
+            u8* mac = reinterpret_cast<u8*>(LLADDR(sdl));
             char macStr[18];
             snprintf(macStr, sizeof(macStr), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-            res[ntohl(sin->sin_addr.s_addr)] = macStr;
+
+            sockaddr_in sa = *(reinterpret_cast<sockaddr_in*>(sin));
+            char tmp[INET_ADDRSTRLEN]{""};
+            inet_ntop(AF_INET, &sa.sin_addr, tmp, sizeof(tmp));
+            res[std::string(tmp)] = macStr;
         }
 
         next += rtm->rtm_msglen;

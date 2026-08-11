@@ -1,6 +1,83 @@
 #include "Window.h"
 
-Window::Window( const u32 &W, const u32 &H, const std::string &T ) : Fl_Window(W, H, T.c_str())
+void DeviceTable::draw_cell( TableContext context, int row, int col,int x, int y, int w, int h )
+/**
+ * 
+ */
+{
+    if (context == CONTEXT_CELL) {
+        fl_color(FL_WHITE);
+        fl_rectf(x, y, w, h, FL_WHITE);
+        fl_color(FL_BLACK);
+        fl_font(FL_HELVETICA, 14);
+        if (row < (int)data.size()) {
+            const auto& item = data[row];
+            std::string text;
+            switch (col) {
+                case 0: text = item.addr; break;
+                case 1: text = item.hostname; break;
+                case 2: text = item.mac; break;
+                case 3: text = item.vendor; break;
+            }
+            fl_draw(text.c_str(), x+5, y, w-10, h, FL_ALIGN_LEFT);
+        }
+        fl_color(FL_GRAY);
+        fl_rect(x, y, w, h);
+    }
+}
+
+DeviceTable::DeviceTable( const u32 &x, const u32 &y, const u32 &width, const u32 &height, const std::string &text ) :
+    Fl_Table(x, y, width, height, text.c_str())
+/**
+ * 
+ */
+{
+    cols(4);
+    col_header(1);
+    col_header_height(25);
+    for (size_t c{}; c < 4; ++c) {
+        col_width(c, colWidths[c]);
+    }
+    rows(0);
+    type(0);
+    row_height_all(25);
+    end();
+}
+
+void DeviceTable::addRow( const DiscoveredDevice &device )
+/**
+ * 
+ */
+{
+    data.push_back(device);
+    rows(data.size());
+    redraw();
+}
+
+void DeviceTable::clearTable()
+/**
+ * 
+ */
+{
+    data.clear();
+    rows(0);
+    redraw();
+}
+
+size_t DeviceTable::getRowCount() const
+/**
+ * 
+ */
+{
+    return data.size();
+}
+
+Window::Window( const u32 &W, const u32 &H, const std::string &T ) 
+    : Fl_Window(W, H, T.c_str())
+    , network_scaner_(std::make_shared<LocalNetworkScaner>("/Users/alekseypodoplelov/Documents/hyita01/etc/macvendor.db"))
+/**
+ * 
+ */
 {   
     int btnY = 10;          // отступ сверху
     int btnH = 30;          // высота кнопок
@@ -14,33 +91,50 @@ Window::Window( const u32 &W, const u32 &H, const std::string &T ) : Fl_Window(W
     x += btnW + spacing;
     wdgt_btn3_ = std::make_unique<Fl_Button>(x, btnY, btnW, btnH, "Кнопка 3");
 
-    // Привязываем колбэки (передаём this для доступа к таблице)
-    wdgt_btn1_->callback(onBtn1);
+    wdgt_btn1_->callback(onBtn1, this);
     wdgt_btn2_->callback(onBtn2, this);
     wdgt_btn3_->callback(onBtn3, this);
 
     int tableY = btnY + btnH + 10; // отступ от кнопок
     int tableH = H - tableY - 10;  // оставшаяся высота
-    wdgt_table_ = std::make_unique<Fl_Table>(10, tableY, W - 20, tableH);
+    wdgt_table_ = std::make_unique<DeviceTable>(10, tableY, W - 20, tableH, "000");
     resizable(wdgt_table_.get());
-    
-    // wdgt_table_->addRow({1, "192.168.1.1", "AA:BB:CC:DD:EE:FF", "Intel"});
-    // wdgt_table_->addRow({2, "192.168.1.2", "11:22:33:44:55:66", "Realtek"});
 
     end();
 }
 
 void Window::onBtn1( Fl_Widget* widget, void* data )
+/**
+ * 
+ */
 {   
-    std::cout << std::string("Кнопка 1 нажата") << std::endl;
+    Window *object = static_cast<Window*>(data);
+    object->startScan(pingM::tcp_80);
 }
 
 void Window::onBtn2( Fl_Widget* widget, void* data )
+/**
+ * 
+ */
 {
     std::cout << std::string("Кнопка 2 нажата") << std::endl;
 }
 
 void Window::onBtn3( Fl_Widget* widget, void* data ) 
+/**
+ * 
+ */
 {
     std::cout << std::string("Кнопка 3 нажата") << std::endl;
+}
+
+void Window::startScan( pingM t )
+/**
+ * 
+ */
+{
+    std::vector<DiscoveredDevice> res{network_scaner_->scanSubnet(t)};
+    for (auto &i : res) {
+        std::cout << "find! -> " << i.addr << "/" << i.hostname << "/" << i.mac << "/" << i.vendor << std::endl;
+    }
 }

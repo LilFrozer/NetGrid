@@ -12,10 +12,13 @@ find_path(BOOST_INCLUDE_DIR
     /opt/homebrew/opt/boost/include
     /usr/local/include
     /usr/include
+    /opt/homebrew/opt/sqlite/include
+    /opt/homebrew/opt/sqlite/lib/libsqlite3.0.dylib 
     REQUIRED
 )
 set(FLTK_DIR "/opt/homebrew/lib/cmake/FLTK")
 find_package(FLTK REQUIRED)
+find_package(SQLite3 REQUIRED)
 
 add_executable(local_scaner_prj
     src/main.cc
@@ -42,6 +45,7 @@ target_link_libraries(local_scaner_prj
     "-framework CoreGraphics"
     "-framework ApplicationServices"
     ${FLTK_LIBRARIES}
+    SQLite::SQLite3
 )
 target_link_libraries(local_scaner_prj
     ${Boost_LIBRARIES}
