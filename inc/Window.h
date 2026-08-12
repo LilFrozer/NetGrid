@@ -4,6 +4,8 @@
  *  -> logic.h
  */
 #include "LocalNetworkScaner.h"
+#include "MulticastBus.h"
+#include <chrono>
 
 /**
  *  -> gui .h
@@ -27,6 +29,17 @@ public:
     size_t getRowCount() const;
 };
 
+/**
+ * -> for local scanning
+ */
+struct LocalFinderDevicesTypes : public std::enable_shared_from_this<LocalFinderDevicesTypes> {
+    std::shared_ptr<asio::steady_timer> timer_{nullptr};
+    std::shared_ptr<IScaner> network_scaner_{nullptr};
+    explicit LocalFinderDevicesTypes( asio::io_context &ctx, const std::string &path_db ) : 
+        timer_(std::make_shared<asio::steady_timer>(ctx, std::chrono::seconds(1)))
+        , network_scaner_(std::make_shared<LocalNetworkScaner>("/Users/alekseypodoplelov/Documents/hyita01/etc/macvendor.db")) {}
+};
+
 class Window : public Fl_Window, public std::enable_shared_from_this<Window> {
 private:
     std::unique_ptr<DeviceTable> wdgt_table_{nullptr};
@@ -37,8 +50,9 @@ private:
     static void onBtn2( Fl_Widget* widget, void* data );
     static void onBtn3( Fl_Widget* widget, void* data );
 private:
-    std::shared_ptr<IScaner> network_scaner_{nullptr};
+    std::shared_ptr<LocalFinderDevicesTypes> local_finder_{nullptr};
+    std::shared_ptr<MulticastBus> multicast_bus_{nullptr};
 public:
-    explicit Window( const u32 &W, const u32 &H, const std::string &T );
+    explicit Window( const u32 &W, const u32 &H, const std::string &T, asio::io_context &ctx );
     void startScan( pingM t );
 };

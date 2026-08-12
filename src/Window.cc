@@ -72,9 +72,10 @@ size_t DeviceTable::getRowCount() const
     return data.size();
 }
 
-Window::Window( const u32 &W, const u32 &H, const std::string &T ) 
+Window::Window( const u32 &W, const u32 &H, const std::string &T, asio::io_context &ctx ) 
     : Fl_Window(W, H, T.c_str())
-    , network_scaner_(std::make_shared<LocalNetworkScaner>("/Users/alekseypodoplelov/Documents/hyita01/etc/macvendor.db"))
+    , local_finder_(std::make_shared<LocalFinderDevicesTypes>(ctx, "/Users/alekseypodoplelov/Documents/hyita01/etc/macvendor.db"))
+    , multicast_bus_(std::make_shared<MulticastBus>(ctx))
 /**
  * 
  */
@@ -133,6 +134,7 @@ void Window::startScan( pingM t )
  * 
  */
 {
+    
     std::vector<DiscoveredDevice> res{network_scaner_->scanSubnet(t)};
     for (auto &i : res) {
         std::cout << "find! -> " << i.addr << "/" << i.hostname << "/" << i.mac << "/" << i.vendor << std::endl;

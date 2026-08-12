@@ -6,17 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_path(BOOST_INCLUDE_DIR
-    NAMES boost/beast.hpp
-    PATHS /opt/homebrew/include
-    /opt/homebrew/opt/boost/include
-    /usr/local/include
-    /usr/include
-    /opt/homebrew/opt/sqlite/include
-    /opt/homebrew/opt/sqlite/lib/libsqlite3.0.dylib 
-    REQUIRED
-)
-set(FLTK_DIR "/opt/homebrew/lib/cmake/FLTK")
 find_package(FLTK REQUIRED)
 find_package(SQLite3 REQUIRED)
 
@@ -26,13 +15,17 @@ add_executable(local_scaner_prj
     src/LocalNetworkScaner.cc
     inc/Window.h
     src/Window.cc
+    inc/asio.hpp
+    inc/MulticastBus.h
+    src/MulticastBus.cc
 )
 
 target_include_directories(local_scaner_prj PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/inc
-    ${CMAKE_CURRENT_SOURCE_DIR}/libs
-    ${BOOST_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/
+    /opt/homebrew/include
     ${FLTK_INCLUDE_DIRS})
+target_compile_definitions(local_scaner_prj PRIVATE ASIO_STANDALONE)
 
 if(APPLE)
 # enable_language(OBJCXX)
@@ -48,7 +41,7 @@ target_link_libraries(local_scaner_prj
     SQLite::SQLite3
 )
 target_link_libraries(local_scaner_prj
-    ${Boost_LIBRARIES}
+    # ${Boost_LIBRARIES}
     OpenSSL::SSL
     OpenSSL::Crypto
 )
