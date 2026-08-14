@@ -94,60 +94,104 @@ std::vector<LocalSubnet> LocalNetworkScaner::getLocalSubnets()
     return res;
 }
 
-bool LocalNetworkScaner::pingHost( pingM t, u32 addr, u32 timeout_ms ) 
+bool LocalNetworkScaner::pingHost( u32 addr, u32 timeout_ms ) 
 /*
  *  -> Перебираем все ip в подсети(192.168.1.1-192.168.1.254), кто ответил - жив
  */
 {
     bool alive = false;
 
-    switch (static_cast<pingM>(t)) {
-    case pingM::tcp_80: {
-        int sock = ::socket(AF_INET, SOCK_STREAM, 0);
-        if (sock < 0) {
-            return false;
-        }
-
-        // -> неблокирующий режим, чтобы не ждать таймаут TCP по умолчанию
-        int flags = fcntl(sock, F_GETFL, 0);
-        fcntl(sock, F_SETFL, flags | O_NONBLOCK);
-
-        sockaddr_in _addr{};
-        _addr.sin_family = AF_INET;
-        _addr.sin_port = htons(80);
-        _addr.sin_addr.s_addr = htonl(addr);
-
-        ::connect(sock, (sockaddr*)&_addr, sizeof(_addr)); // -> вернёт EINPROGRESS сразу
-
-        fd_set writeSet;
-        FD_ZERO(&writeSet);
-        FD_SET(sock, &writeSet);
-        timeval tv{timeout_ms / 1000, static_cast<__darwin_suseconds_t>((timeout_ms % 1000) * 1000)};
-
-        if (select(sock + 1, nullptr, &writeSet, nullptr, &tv) > 0) {
-            int err = 0;
-            socklen_t len = sizeof(err);
-            getsockopt(sock, SOL_SOCKET, SO_ERROR, &err, &len);
-            // -> ECONNREFUSED тоже значит "хост жив", просто порт закрыт
-            alive = (err == 0 || err == ECONNREFUSED);
-        }
-
-        close(sock);
-        break;
+    int sock = ::socket(AF_INET, SOCK_STREAM, 0);
+    if (sock < 0) {
+        return false;
     }
-    case pingM::icmp: {
-        break;
+
+    // -> неблокирующий режим, чтобы не ждать таймаут TCP по умолчанию
+    int flags = fcntl(sock, F_GETFL, 0);
+    fcntl(sock, F_SETFL, flags | O_NONBLOCK);
+
+    sockaddr_in _addr{};
+    _addr.sin_family = AF_INET;
+    _addr.sin_port = htons(80);
+    _addr.sin_addr.s_addr = htonl(addr);
+
+    ::connect(sock, (sockaddr*)&_addr, sizeof(_addr)); // -> вернёт EINPROGRESS сразу
+
+    fd_set writeSet;
+    FD_ZERO(&writeSet);
+    FD_SET(sock, &writeSet);
+    timeval tv{timeout_ms / 1000, static_cast<__darwin_suseconds_t>((timeout_ms % 1000) * 1000)};
+
+    if (select(sock + 1, nullptr, &writeSet, nullptr, &tv) > 0) {
+        int err = 0;
+        socklen_t len = sizeof(err);
+        getsockopt(sock, SOL_SOCKET, SO_ERROR, &err, &len);
+        // -> ECONNREFUSED тоже значит "хост жив", просто порт закрыт
+        alive = (err == 0 || err == ECONNREFUSED);
     }
-    default: {
-        throw std::runtime_error("error mode pingHost");
-        break;
-    }
-    }
+
+    close(sock);
 
     return alive;
 }
 
-std::vector<DiscoveredDevice> LocalNetworkScaner::scanSubnet( pingM t = pingM::tcp_80 ) 
+std::vector<DiscoveredDevice> LocalNetworkScaner::scanOneSubnet( LocalSubnet &subnet )
+/**
+ * 
+ */
+{
+    std::vector<DiscoveredDevice> devices{};
+    std::mutex devices_mutex;
+
+    u32 host_bits{~subnet.mask};
+    u32 net_addr{subnet.addr & subnet.mask};
+    u32 broadcast_addr{net_addr | host_bits};
+
+    std::vector<std::thread> workers;
+    std::atomic<u32> next_ip{net_addr + 1};
+
+    u32 thread_count = std::max(1u, std::min(64u, std::thread::hardware_concurrency() * 8));
+
+    for (auto i = 0; i < thread_count; ++i) {
+        workers.emplace_back([&]() {
+            u32 addr{};
+            while ((addr = next_ip.fetch_add(1)) < broadcast_addr) {
+                if (pingHost(addr, 300)) {
+                    DiscoveredDevice dd;
+                    sockaddr_in sa{};
+                    sa.sin_family = AF_INET;
+                    sa.sin_addr.s_addr = htonl(addr);
+
+                    char host[NI_MAXHOST] = {};
+                    int ret = getnameinfo(reinterpret_cast<sockaddr*>(&sa), sizeof(sa),
+                                        host, sizeof(host), nullptr, 0, NI_NAMEREQD);
+                    if (ret == 0) {
+                        dd.hostname = host;
+                    } else {
+                        dd.hostname = "null";
+                    }
+
+                    char _addr[INET_ADDRSTRLEN]{""};
+                    inet_ntop(AF_INET, &sa.sin_addr, _addr, sizeof(_addr));
+                    dd.addr = _addr;
+                    
+                    {
+                        std::lock_guard<std::mutex> lock(devices_mutex);
+                        devices.push_back(std::move(dd));
+                    }
+                }
+            }
+        });
+    }
+
+    for (auto& w : workers) {
+        w.join();
+    }
+
+    return devices;
+}
+
+std::vector<DiscoveredDevice> LocalNetworkScaner::scanAllSubnet() 
 /**
  * -> Проверяем локальные подсети
  */
@@ -155,55 +199,10 @@ std::vector<DiscoveredDevice> LocalNetworkScaner::scanSubnet( pingM t = pingM::t
     std::vector<DiscoveredDevice> devices{};
     std::vector<LocalSubnet> local_subnets{this->getLocalSubnets()};
 
-    auto func = [this, &devices]( pingM t, LocalSubnet &subnet ) -> void {
-        u32 host_bits{~subnet.mask};
-        u32 net_addr{subnet.addr & subnet.mask};
-        u32 broadcast_addr{net_addr | host_bits};
-
-        std::vector<std::thread> workers;
-        std::atomic<u32> next_ip{net_addr + 1};
-
-        u32 thread_count{std::min(64u, std::thread::hardware_concurrency() * 8)};
-
-        for (auto i = 0; i < thread_count; ++i) {
-            workers.emplace_back([&]() {
-                u32 addr{};
-                while ((addr = next_ip.fetch_add(1)) < broadcast_addr) {
-                    if (pingHost(t, addr, 300)) {
-                        auto resolveDevice = []( DiscoveredDevice &dd, u32 addr ) -> void {
-                            sockaddr_in sa{};
-                            sa.sin_family = AF_INET;
-                            sa.sin_addr.s_addr = htonl(addr);
-
-                            // -> dns
-                            char host[NI_MAXHOST] = {};
-                            int ret = getnameinfo(reinterpret_cast<sockaddr*>(&sa), sizeof(sa),
-                                                host, sizeof(host), nullptr, 0, NI_NAMEREQD);
-                            if (ret == 0) {
-                                dd.hostname = host;
-                            } else {
-                                dd.hostname = "null";
-                            }
-
-                            // -> addr
-                            char _addr[INET_ADDRSTRLEN]{""};
-                            inet_ntop(AF_INET, &sa.sin_addr, _addr, sizeof(_addr));
-                            dd.addr = _addr;
-                        };
-                        devices.push_back({});
-                        resolveDevice(devices.back(), addr);
-                    }
-                }
-            });
-        }
-
-        for (auto& w : workers) {
-            w.join();
-        }
-    };
-
     for (auto &i : local_subnets) {
-        func(t, i);
+        std::vector<DiscoveredDevice> one_subnet = scanOneSubnet(i);
+        for (auto &j : one_subnet)
+            devices.push_back(j);
     }
 
     std::map<std::string, std::string> arp_table{readArpTable()};

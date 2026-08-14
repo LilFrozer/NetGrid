@@ -6,8 +6,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(FLTK REQUIRED)
+find_package(glfw3 REQUIRED)
 find_package(SQLite3 REQUIRED)
+
+set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/extern/imgui)
+set(glfw3_DIR "/opt/homebrew/lib/cmake/glfw3")
+file(GLOB IMGUI_SOURCES
+    ${IMGUI_DIR}/*.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+)
 
 add_executable(local_scaner_prj
     src/main.cc
@@ -18,13 +26,16 @@ add_executable(local_scaner_prj
     inc/asio.hpp
     inc/MulticastBus.h
     src/MulticastBus.cc
+    ${IMGUI_SOURCES}
 )
 
 target_include_directories(local_scaner_prj PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/inc
     ${CMAKE_CURRENT_SOURCE_DIR}/libs/
-    /opt/homebrew/include
-    ${FLTK_INCLUDE_DIRS})
+    ${IMGUI_DIR}
+    ${IMGUI_DIR}/backends
+    ${glfw3_INCLUDE_DIRS}
+)
 target_compile_definitions(local_scaner_prj PRIVATE ASIO_STANDALONE)
 
 if(APPLE)
@@ -37,13 +48,14 @@ target_link_libraries(local_scaner_prj
     "-framework CoreFoundation"
     "-framework CoreGraphics"
     "-framework ApplicationServices"
-    ${FLTK_LIBRARIES}
-    SQLite::SQLite3
-)
-target_link_libraries(local_scaner_prj
-    # ${Boost_LIBRARIES}
     OpenSSL::SSL
     OpenSSL::Crypto
+    SQLite::SQLite3
+    glfw
+    ${glfw3_LIBRARIES}
+    "-framework Cocoa"
+    "-framework OpenGL"
+    "-framework IOKit"
 )
 target_compile_definitions(local_scaner_prj PRIVATE
     BOOST_BEAST_USE_STD_ERIC=1
