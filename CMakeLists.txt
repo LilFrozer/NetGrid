@@ -19,14 +19,19 @@ file(GLOB IMGUI_SOURCES
 
 add_executable(local_scaner_prj
     src/main.cc
-    inc/LocalNetworkScaner.h
-    src/LocalNetworkScaner.cc
+    inc/DeviceFinderScaner.h
+    src/DeviceFinderScaner.cc
     inc/Window.h
     src/Window.cc
     inc/asio.hpp
     inc/MulticastBus.h
     src/MulticastBus.cc
     ${IMGUI_SOURCES}
+    inc/proto.h
+    inc/KeyScaner.h
+    src/KeyScaner.cc
+    inc/TraficMonitor.h
+    src/TraficMonitor.cc
 )
 
 target_include_directories(local_scaner_prj PRIVATE

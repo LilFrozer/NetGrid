@@ -1,4 +1,4 @@
-#include "LocalNetworkScaner.h"
+#include "DeviceFinderScaner.h"
 #include <ifaddrs.h>
 #include <net/if.h>
 #include <sys/socket.h>
@@ -12,7 +12,7 @@
 #include <net/if_dl.h>
 #include <net/route.h>
 
-LocalNetworkScaner::LocalNetworkScaner( const std::string& vendor_db_path )
+DeviceFinderScaner::DeviceFinderScaner( const std::string& vendor_db_path )
 /**
  * 
  */
@@ -22,7 +22,7 @@ LocalNetworkScaner::LocalNetworkScaner( const std::string& vendor_db_path )
     }
 }
 
-LocalNetworkScaner::~LocalNetworkScaner()
+DeviceFinderScaner::~DeviceFinderScaner()
 /**
  * 
  */
@@ -30,7 +30,7 @@ LocalNetworkScaner::~LocalNetworkScaner()
     sqlite3_close(vendor_db_);
 }
 
-std::string LocalNetworkScaner::findVendor( const std::string &mac )
+std::string DeviceFinderScaner::findVendor( const std::string &mac )
 /**
  * 
  */
@@ -64,7 +64,7 @@ std::string LocalNetworkScaner::findVendor( const std::string &mac )
     return vendor;
 }
 
-std::vector<LocalSubnet> LocalNetworkScaner::getLocalSubnets() 
+std::vector<LocalSubnet> DeviceFinderScaner::getLocalSubnets() 
 /**
  * -> ищем все локальные подсети
  */
@@ -94,7 +94,7 @@ std::vector<LocalSubnet> LocalNetworkScaner::getLocalSubnets()
     return res;
 }
 
-bool LocalNetworkScaner::pingHost( u32 addr, u32 timeout_ms ) 
+bool DeviceFinderScaner::pingHost( u32 addr, u32 timeout_ms ) 
 /*
  *  -> Перебираем все ip в подсети(192.168.1.1-192.168.1.254), кто ответил - жив
  */
@@ -135,7 +135,7 @@ bool LocalNetworkScaner::pingHost( u32 addr, u32 timeout_ms )
     return alive;
 }
 
-std::vector<DiscoveredDevice> LocalNetworkScaner::scanOneSubnet( LocalSubnet &subnet )
+std::vector<DiscoveredDevice> DeviceFinderScaner::scanOneSubnet( LocalSubnet &subnet )
 /**
  * 
  */
@@ -191,7 +191,7 @@ std::vector<DiscoveredDevice> LocalNetworkScaner::scanOneSubnet( LocalSubnet &su
     return devices;
 }
 
-std::vector<DiscoveredDevice> LocalNetworkScaner::scanAllSubnet() 
+std::vector<DiscoveredDevice> DeviceFinderScaner::scanAllSubnet() 
 /**
  * -> Проверяем локальные подсети
  */
@@ -214,7 +214,7 @@ std::vector<DiscoveredDevice> LocalNetworkScaner::scanAllSubnet()
     return devices;
 }
 
-std::map<std::string, std::string> LocalNetworkScaner::readArpTable() 
+std::map<std::string, std::string> DeviceFinderScaner::readArpTable() 
 /**
  * -> Выявляем mac из arp таблицы
  */

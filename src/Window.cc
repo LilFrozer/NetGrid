@@ -61,42 +61,70 @@ void DeviceTable::drawTable()
     }
 }
 
-Window::Window( asio::io_context &ctx ) :
-    local_finder_(std::make_unique<LocalFinderDevicesTypes>(ctx, "/Users/alekseypodoplelov/Documents/hyita01/etc/macvendor.db"))
-    , table_(std::make_unique<DeviceTable>())
-    // , multicast_bus_(std::make_unique<MulticastBus>(ctx))
-/**
- * 
- */
-{   
-}
-
-void Window::startScan()
+void Window::onClipboardSlot()
 /**
  * 
  */
 {
-    if (local_finder_->timer_active) {
+    std::thread([this]() {
+        std::cout << "Pressed!" << std::endl;
+        std::cout << "Text: " << local_clipboard_service_->key_scaner->get_text() << std::endl;
+    }).detach();
+}
+
+Window::Window( asio::io_context &ctx ) :
+    local_scanning_service_(std::make_unique<LocalFinderDevicesTypes>(ctx, "/Users/alekseypodoplelov/Documents/hyita01/etc/macvendor.db"))
+    , table_(std::make_unique<DeviceTable>())
+    , local_clipboard_service_(std::make_shared<LocalSharedClipboard>(ctx))
+/**
+ * 
+ */
+{   
+    local_clipboard_service_->key_scaner->setCallBack([this]() {
+        onClipboardSlot();
+    });
+}
+
+void Window::doLocalScanningService()
+/**
+ * 
+ */
+{
+    if (local_scanning_service_->is_active) {
         asio::error_code ec;
-        local_finder_->timer->cancel();
-        local_finder_->timer_active = false;
+        local_scanning_service_->timer->cancel();
+        local_scanning_service_->is_active = false;
         return;
     } 
-    local_finder_->timer_active = true;
-    local_finder_->timer->expires_after(std::chrono::seconds(3));
-    local_finder_->timer->async_wait([this]( const asio::error_code ec) {
-        local_finder_->timer_active = false;
+    local_scanning_service_->is_active = true;
+    local_scanning_service_->timer->expires_after(std::chrono::seconds(3));
+    local_scanning_service_->timer->async_wait([this]( const asio::error_code ec) {
+        local_scanning_service_->is_active = false;
         if (!ec) {
-            std::cout << "scan!" << std::endl;
-            std::vector<DiscoveredDevice> list_devices{local_finder_->network_scaner->scanAllSubnet()};
+            std::vector<DiscoveredDevice> list_devices{local_scanning_service_->device_scaner->scanAllSubnet()};
+            table_->clearTable();
             for (auto &i : list_devices) {
-                table_->clearTable();
                 table_->addRow(i);
-                // std::cout << "find! -> " << i.addr << "/" << i.hostname << "/" << i.mac << "/" << i.vendor << std::endl;
             }
-            this->startScan();
+            this->doLocalScanningService();
         }
     });
+}
+
+void Window::doLocalClipboardService()
+/**
+ * 
+ */
+{
+    if (local_clipboard_service_->is_active) {
+        local_clipboard_service_->is_active = false;
+        local_clipboard_service_->key_scaner->stopScan();
+        local_clipboard_service_->multicast_bus->stopListen();
+        return;
+    }
+    local_clipboard_service_->is_active = true;
+    local_clipboard_service_->key_scaner->startScan();
+    local_clipboard_service_->multicast_bus->startListen();
 }
 
 void Window::draw()
@@ -108,25 +136,15 @@ void Window::draw()
     ImGui::Begin("MyApp", &flag_show, ImGuiWindowFlags_NoResize);
     ImGui::SetWindowSize(ImVec2(1024, 768), ImGuiCond_Once);
 
-    // ---- Кнопки ----
     if (ImGui::Button("Scan")) {
-        startScan();
+        doLocalScanningService();
     }
     ImGui::SameLine();
-    if (ImGui::Button("Clear")) {
-        table_->clearTable();
+    if (ImGui::Button("Clipboard")) {
+        doLocalClipboardService();
     }
     ImGui::Separator();
 
-    // ---- Статус ----
-    // if (scan_manager_->isScanning()) {
-    //     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Scanning...");
-    // } else {
-    //     ImGui::Text("Ready");
-    // }
-    // ImGui::Separator();
-
-    // ---- Таблица ----
     if (table_) {
         table_->drawTable();
     }

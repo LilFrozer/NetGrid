@@ -34,7 +34,7 @@ struct DiscoveredDevice {
     std::string vendor{};
 };
 
-class IScaner {
+class IDeviceScaner {
 protected:
     virtual std::vector<LocalSubnet> getLocalSubnets() = 0;
     virtual bool pingHost( u32 addr = 0, u32 timeout_ms = 300 ) = 0;
@@ -43,11 +43,11 @@ protected:
     virtual std::string findVendor( const std::string &mac ) = 0;
     virtual std::vector<DiscoveredDevice> scanOneSubnet( LocalSubnet &subnet ) = 0;
 public:
-    virtual ~IScaner() = default;
+    virtual ~IDeviceScaner() = default;
     virtual std::vector<DiscoveredDevice> scanAllSubnet() = 0;
 };
 
-class LocalNetworkScaner final : public IScaner, public std::enable_shared_from_this<LocalNetworkScaner> {
+class DeviceFinderScaner final : public IDeviceScaner, public std::enable_shared_from_this<DeviceFinderScaner> {
 private:
     std::vector<LocalSubnet> getLocalSubnets() override;
     bool pingHost( u32 addr, u32 timeout_ms ) override;
@@ -55,7 +55,7 @@ private:
     std::string findVendor( const std::string &mac ) override;
     std::vector<DiscoveredDevice> scanOneSubnet( LocalSubnet &subnet ) override;
 public:
-    LocalNetworkScaner( const std::string& vendor_db_path );
-    ~LocalNetworkScaner() override;
+    DeviceFinderScaner( const std::string& vendor_db_path );
+    ~DeviceFinderScaner() override;
     std::vector<DiscoveredDevice> scanAllSubnet() override;
 };

@@ -1,9 +1,7 @@
 #pragma once 
 
-/**
- *  -> logic.h
- */
-#include "LocalNetworkScaner.h"
+#include "DeviceFinderScaner.h"
+#include "KeyScaner.h"
 #include "MulticastBus.h"
 #include <chrono>
 #include <mutex>
@@ -20,32 +18,39 @@ private:
 };
 
 /**
- * -> for local scanning
+ * -> Сканирование всех устройств в локальной сети
  */
 struct LocalFinderDevicesTypes : public std::enable_shared_from_this<LocalFinderDevicesTypes> {
-    bool timer_active = false;
+    bool is_active = false;
     std::unique_ptr<asio::steady_timer> timer{nullptr};
-    std::unique_ptr<IScaner> network_scaner{nullptr};
+    std::unique_ptr<IDeviceScaner> device_scaner{nullptr};
     explicit LocalFinderDevicesTypes( asio::io_context &ctx, const std::string &path_db ) : 
         timer(std::make_unique<asio::steady_timer>(ctx))
-        , network_scaner(std::make_unique<LocalNetworkScaner>("/Users/alekseypodoplelov/Documents/hyita01/etc/macvendor.db")) {
-            std::cout << "LocalFinderDevicesTypes!" << std::endl;
-            // LocalNetworkScaner *scaner = static_cast<LocalNetworkScaner*>(network_scaner.get());
-            // std::vector<DiscoveredDevice> list_devices{scaner->scanAllSubnet()};
-            // for (auto &i : list_devices) {
-            //     std::cout << "find! -> " << i.addr << "/" << i.hostname << "/" << i.mac << "/" << i.vendor << std::endl;
-            // }
-        }
+        , device_scaner(std::make_unique<DeviceFinderScaner>("/Users/alekseypodoplelov/Documents/hyita01/etc/macvendor.db")) {}
+};
+
+/**
+ * -> Общий буфер обмена в локальной сети
+ */
+struct LocalSharedClipboard : public std::enable_shared_from_this<LocalSharedClipboard> {
+    bool is_active = false;
+    std::shared_ptr<MulticastBus> multicast_bus{nullptr};
+    std::shared_ptr<IKeyScaner> key_scaner{nullptr};
+    explicit LocalSharedClipboard( asio::io_context &ctx ) : 
+        multicast_bus(std::make_shared<MulticastBus>(ctx))
+        , key_scaner(std::make_shared<MacKeyScaner>()) {}
 };
 
 class Window : public std::enable_shared_from_this<Window> {
 private:
     std::unique_ptr<DeviceTable> table_{nullptr};
 private:
-    std::unique_ptr<LocalFinderDevicesTypes> local_finder_{nullptr};
-    std::unique_ptr<MulticastBus> multicast_bus_{nullptr};
+    std::unique_ptr<LocalFinderDevicesTypes> local_scanning_service_{nullptr};
+    std::shared_ptr<LocalSharedClipboard> local_clipboard_service_{nullptr};
+    void onClipboardSlot();
 public:
     explicit Window( asio::io_context &ctx );
     void draw();
-    void startScan();
+    void doLocalScanningService();
+    void doLocalClipboardService();
 };
