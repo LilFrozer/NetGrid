@@ -13,12 +13,7 @@ namespace multicast_const {
     const uint16_t k_port{30000};
 }
 
-class IFileManager {
-public:
-    virtual ~IFileManager() = default;
-};
-
-class MulticastBus : public std::enable_shared_from_this<MulticastBus> {
+class MulticastBus final : public std::enable_shared_from_this<MulticastBus> {
 private:
     std::shared_ptr<asio::ip::udp::socket> socket_{nullptr};
     asio::ip::udp::endpoint sender_endpoint_;

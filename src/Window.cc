@@ -76,6 +76,7 @@ Window::Window( asio::io_context &ctx ) :
     local_scanning_service_(std::make_unique<LocalFinderDevicesTypes>(ctx, "/Users/alekseypodoplelov/Documents/hyita01/etc/macvendor.db"))
     , table_(std::make_unique<DeviceTable>())
     , local_clipboard_service_(std::make_shared<LocalSharedClipboard>(ctx))
+    , local_trafic_service_(std::make_shared<LocalTraficMonitor>())
 /**
  * 
  */
