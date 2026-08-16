@@ -64,4 +64,5 @@ public:
     void draw();
     void doLocalScanningService();
     void doLocalClipboardService();
+    void doTraficMonitorService();
 };

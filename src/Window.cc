@@ -128,6 +128,20 @@ void Window::doLocalClipboardService()
     local_clipboard_service_->multicast_bus->startListen();
 }
 
+void Window::doTraficMonitorService()
+/**
+ * 
+ */
+{
+    if (local_trafic_service_->is_active) {
+        local_trafic_service_->is_active = false;
+        local_trafic_service_->trafic_monitor->stopCapture();
+        return;
+    }
+    local_trafic_service_->is_active = true;
+    local_trafic_service_->trafic_monitor->startCapture();
+}
+
 void Window::draw()
 /**
  * 
@@ -143,6 +157,10 @@ void Window::draw()
     ImGui::SameLine();
     if (ImGui::Button("Clipboard")) {
         doLocalClipboardService();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("TraficMonitor")) {
+        doTraficMonitorService();
     }
     ImGui::Separator();
 

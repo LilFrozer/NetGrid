@@ -4,12 +4,31 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <thread>
+#include <atomic>
+
+struct TraficStatistic {
+    std::atomic<uint32_t> cnt_incoming_packets{0};
+    std::atomic<uint32_t> cnt_incoming_bytes{0};
+    std::atomic<uint32_t> cnt_outcoming_packets{0};
+    std::atomic<uint32_t> cnt_outcoming_bytes{0};
+};
+
+enum class DirectionPacketInfo : uint8_t {
+    InComing = 0,
+    OutComing,
+    Unknown
+};
 
 class ITraficMonitor {
 protected:
-    virtual std::vector<std::pair<std::string, std::string>> getActiveInterfaces() = 0;
+    std::vector<std::pair<std::string, std::string>> interfaces_{};
+    std::thread thread_;
+    std::atomic<bool> is_running_{false};
 public:
     virtual ~ITraficMonitor() = default;
+    virtual void startCapture() = 0;
+    virtual void stopCapture() = 0;
 };
 
 #include <sys/ioctl.h>
@@ -26,14 +45,22 @@ public:
 #include <netdb.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <netinet/tcp.h>
+#include <netinet/udp.h>
+#include <netinet/ip_icmp.h>
 
 class MacosTraficMonitor final : public std::enable_shared_from_this<MacosTraficMonitor>, public ITraficMonitor {
 private:
-    std::vector<std::pair<std::string, std::string>> getActiveInterfaces() override;
     int bpf_descriptor_ = -1;
+    std::string selected_interface_{""};
+    std::string local_ip_{""};
     void openBPF();
-    void setInterface( const std::string &interface );
+    void configureBPF( const std::string& interface );
+    DirectionPacketInfo getDirection( struct ip* ip_hdr );
+    void printPacketInfo( struct ip* ip_hdr, DirectionPacketInfo dir );
 public:
-    explicit MacosTraficMonitor();
-    ~MacosTraficMonitor() override = default;
+    explicit MacosTraficMonitor( const std::string& iface = "" );
+    ~MacosTraficMonitor() override;
+    void startCapture() override;
+    void stopCapture() override;
 };
